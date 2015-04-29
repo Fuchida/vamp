@@ -7,17 +7,15 @@ API aerial view
 from vamp import Vamp
 
 # Setup
-vampScanner = Vamp()
+vampScanner = Vamp('http://webpage.com')
 
 # Scan a page
-VampScanner.scan("http://webpage.com")
+VampScanner.scan()
 
 # When a deal link/s is found
 >> {"http://example.com/hello.html":404}
 
 # When no dead link/s are found
 >> {}
-
-# HTTP connection fails, an exception is raised by HTTP lib being used
 
 ```
