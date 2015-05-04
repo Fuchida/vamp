@@ -7,10 +7,11 @@ API aerial view
 from vamp import Vamp
 
 # Setup
-vampScanner = Vamp('http://webpage.com')
+vamp_scanner = Vamp('http://webpage.com')
 
 # Scan a page
-VampScanner.scan()
+# if specific page is not specified, index page will be scanned
+vamp_scanner.page_deadlinks()
 
 # When a deal link/s is found
 >> {"http://example.com/hello.html":404}
