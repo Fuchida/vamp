@@ -19,6 +19,8 @@ lib64/
 parts/
 sdist/
 var/
+bin/
+include/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -58,3 +60,4 @@ target/
 
 #custom
 *.pyc
+pip-selfcheck.json
