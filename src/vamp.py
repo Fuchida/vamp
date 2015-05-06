@@ -2,7 +2,7 @@ import requests
 from lxml import html
 
 # TODO: Detect relative urls on a page
-# TODO: Detect reditect statuses
+# TODO: Detect redirect statuses
 
 class Vamp(object):
 
