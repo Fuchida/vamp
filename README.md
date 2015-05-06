@@ -11,7 +11,7 @@ vamp_scanner = Vamp('http://webpage.com')
 
 # Scan a page
 # if specific page is not specified, index page will be scanned
-vamp_scanner.page_deadlinks()
+vamp_scanner.scan_page()
 
 # When a dead link/s is found
 >> {"http://example.com/hello.html":404}
