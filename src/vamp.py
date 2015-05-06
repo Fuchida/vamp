@@ -2,7 +2,7 @@ import requests
 from lxml import html
 
 # TODO: Detect relative urls on a page
-
+# TODO: Detect reditect statuses
 
 class Vamp(object):
 
@@ -78,6 +78,12 @@ class Vamp(object):
         """
         Go through a dictionary of urls and http statuses and
         filter out 200 responses
+
+        Args:
+                urls_and_statuses: A dictionary of links and responses
+
+        Returns:
+                A dictionary if only items that have 200 for values
         """
         return {url: status_code for
                 url, status_code in urls_and_statuses.items()
