@@ -7,7 +7,7 @@ class Vamp(object):
     def __init__(self, url):
         self.url = url
 
-    def scan(self):
+    def scan_page(self):
         """
         Given the configured url,
         make a request to the site and get page content
