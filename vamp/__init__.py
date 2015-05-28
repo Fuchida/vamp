@@ -20,7 +20,7 @@ class Vamp(object):
         Return:
                 Dictionary: Containing key value links and status
         """
-        
+
         response = requests.get(self.url)
         page_urls = self.get_page_urls(response.text)
         urls_and_statuses = self._check_url_status(page_urls)
@@ -38,7 +38,7 @@ class Vamp(object):
         Returns:
             A list with HTML links or and empty dictionary
         """
-        
+
         tree = html.fromstring(html_page)
         links = tree.xpath('//a/@href')
         return(links)
@@ -55,7 +55,7 @@ class Vamp(object):
                 A dictionary with key values of urls and http statuses
 
         """
-        
+
         url_results = {}
         http_urls = self.sanitize_urls(urls)
 
