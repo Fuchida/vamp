@@ -12,8 +12,7 @@ class Vamp(object):
 
     def scan_page(self):
         """
-        Given the configured url,
-        and return dead links
+        Given the configured url return dead links
 
         Args:
                 None
@@ -68,13 +67,14 @@ class Vamp(object):
 
     def sanitize_urls(self, urls):
         """
-        Takes a list of urls and removes all items that do not start with http
+        Takes a list of urls and removes all items that do not start
+        are not relative links and do not start with http
 
         Args:
                 urls: A list of urls
 
         Returns:
-                A list of only urls that start with http
+                A list of urls
         """
         return [item for item in urls if item.startswith('http') or item.startswith(r'/')]
 
