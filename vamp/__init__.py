@@ -11,6 +11,7 @@ class Vamp(object):
         self.url = url
 
     def scan_page(self):
+        
         """
         Given the configured url return dead links
 
@@ -27,6 +28,7 @@ class Vamp(object):
         return dead_links
 
     def get_page_urls(self, html_page):
+        
         """
         Given an HTML page, return a dictionary with all the URL
         found on the page
@@ -42,6 +44,7 @@ class Vamp(object):
         return(links)
 
     def _check_url_status(self, urls):
+        
         """
         Given a list of URLs perform get requests and check http
         status of each URL
@@ -66,6 +69,7 @@ class Vamp(object):
         return url_results
 
     def sanitize_urls(self, urls):
+        
         """
         Takes a list of urls and removes all items that do not start
         are not relative links and do not start with http
@@ -79,6 +83,7 @@ class Vamp(object):
         return [item for item in urls if item.startswith('http') or item.startswith(r'/')]
 
     def _filter_ok_responses(self, urls_and_statuses):
+        
         """
         Go through a dictionary of urls and http statuses and
         filter out 200 responses
