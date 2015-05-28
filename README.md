@@ -1,6 +1,6 @@
 A small Python 3 module that scans a page and returns dead links
 
-API aerial view {In progress}
+API aerial view {In progress} [![Code Health](https://landscape.io/github/Fuchida/vamp/master/landscape.svg?style=flat)](https://landscape.io/github/Fuchida/vamp/master)
 --------------
 
 ```Python
