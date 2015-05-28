@@ -61,3 +61,4 @@ target/
 #custom
 *.pyc
 pip-selfcheck.json
+/share

@@ -1,8 +1,9 @@
 import requests
 from lxml import html
+from urllib import parse
 
-# TODO: Detect relative urls on a page
 # TODO: Detect redirect statuses
+
 
 class Vamp(object):
 
@@ -12,13 +13,13 @@ class Vamp(object):
     def scan_page(self):
         """
         Given the configured url,
-        make a request to the site and get page content
+        and return dead links
 
         Args:
                 None
 
         Return:
-                None
+                Dictionary: Containing key value links and status
         """
         response = requests.get(self.url)
         page_urls = self.get_page_urls(response.text)
@@ -57,6 +58,9 @@ class Vamp(object):
         http_urls = self.sanitize_urls(urls)
 
         for item in http_urls:
+            if item.startswith(r'/'):
+                item = parse.urljoin(self.url, item)
+
             url_response = requests.get(item)
             url_results[item] = url_response.status_code
 
@@ -72,7 +76,7 @@ class Vamp(object):
         Returns:
                 A list of only urls that start with http
         """
-        return [item for item in urls if item.startswith('http')]
+        return [item for item in urls if item.startswith('http') or item.startswith(r'/')]
 
     def _filter_ok_responses(self, urls_and_statuses):
         """
