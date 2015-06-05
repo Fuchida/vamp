@@ -23,7 +23,7 @@ class Vamp(object):
 
         response = requests.get(self.url)
         page_urls = self.get_page_urls(response.text)
-        urls_and_statuses = self._check_url_status(page_urls)
+        urls_and_statuses = self.check_url_status(page_urls)
         dead_links = self._filter_ok_responses(urls_and_statuses)
         return dead_links
 
@@ -43,7 +43,8 @@ class Vamp(object):
         links = tree.xpath('//a/@href')
         return(links)
 
-    def _check_url_status(self, urls):
+    @classmethod
+    def check_url_status(self, urls):
         """
         Given a list of URLs perform get requests and check http
         status of each URL
@@ -68,6 +69,7 @@ class Vamp(object):
 
         return url_results
 
+    @classmethod
     def sanitize_urls(self, urls):
         """
         Takes a list of urls and removes all items that do not start
