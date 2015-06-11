@@ -10,18 +10,22 @@ class Vamp(object):
     def __init__(self, url):
         self.url = url
 
-    def scan_page(self):
+    def scan_page(self, page=None):
         """
         Given the configured url return dead links
 
         Args:
-                None
+                String: A specific page on the site
 
         Return:
                 Dictionary: Containing key value links and status
         """
 
-        response = requests.get(self.url)
+        if page is None:
+            response = requests.get(self.url)
+        else:
+            response = requests.get(page)
+
         page_urls = self.get_page_urls(response.text)
         urls_and_statuses = self.check_url_status(page_urls)
         dead_links = self._filter_ok_responses(urls_and_statuses)
@@ -43,7 +47,6 @@ class Vamp(object):
         links = tree.xpath('//a/@href')
         return(links)
 
-    @classmethod
     def check_url_status(self, urls):
         """
         Given a list of URLs perform get requests and check http
