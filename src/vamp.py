@@ -1,5 +1,4 @@
 import requests
-import grequests
 from lxml import html
 from urllib import parse
 
@@ -62,35 +61,18 @@ class Vamp(object):
         """
 
         url_results = {}
-        request_urls = []
         http_urls = self.sanitize_urls(urls)
 
         # Make relative urls absolute
-        for url in http_urls:
-            if url.startswith(r'/'):
-                url = parse.urljoin(self.url, url)
-                request_urls.append(url)
-            else:
-                request_urls.append(url)
+        for item in http_urls:
+            if item.startswith(r'/'):
+                item = parse.urljoin(self.url, item)
 
-        responses = self.perform_async_requests(request_urls)
-
-        for response in responses:
-            url_results[response.url] = response.status_code
+            url_response = requests.get(item)
+            url_results[item] = url_response.status_code
 
         return url_results
 
-    def perform_async_requests(self, urls):
-        """Perform asynchronous get requests given multiple links
-
-        Args:
-            urls: An list of URLs
-        Returns:
-            An list of requests response objects
-        """
-        unsentRequests = ((grequests.get(resource) for resource in urls))
-        # Size param specifies the number of requests to be made at a time
-        return grequests.map(unsentRequests, size=10)
 
     @classmethod
     def sanitize_urls(self, urls):
