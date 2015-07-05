@@ -76,7 +76,7 @@ class Vamp(object):
             if item.startswith(r'/'):
                 item = parse.urljoin(self.url, item)
 
-            self.logger.debug('Checking URL %s' % (item))
+            self.logger.debug('Checking URL %s', item)
             url_response = requests.get(item)
             url_results[item] = url_response.status_code
 
