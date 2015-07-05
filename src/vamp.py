@@ -1,14 +1,21 @@
+from urllib import parse
+import logging
+
 import requests
 from lxml import html
-from urllib import parse
 
 # TODO: Detect redirect statuses
 
 
 class Vamp(object):
 
-    def __init__(self, url):
+    def __init__(self, url, log_level=None):
         self.url = url
+        self.logger = logging.getLogger('Vamp')
+        if log_level:
+            logging.basicConfig()
+            self.level = logging.getLevelName(log_level)
+            self.logger.setLevel(self.level)
 
     def scan_page(self, page=None):
         """
@@ -16,6 +23,7 @@ class Vamp(object):
 
         Args:
                 String: A specific page on the site
+                String: log_level of how much information you need (INFO, )
 
         Return:
                 Dictionary: Containing key value links and status
@@ -68,11 +76,11 @@ class Vamp(object):
             if item.startswith(r'/'):
                 item = parse.urljoin(self.url, item)
 
+            self.logger.debug('Checking URL {}'.format(item))
             url_response = requests.get(item)
             url_results[item] = url_response.status_code
 
         return url_results
-
 
     @classmethod
     def sanitize_urls(self, urls):
