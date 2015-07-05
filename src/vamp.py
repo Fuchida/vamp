@@ -63,6 +63,7 @@ class Vamp(object):
         url_results = {}
         http_urls = self.sanitize_urls(urls)
 
+        # Make relative urls absolute
         for item in http_urls:
             if item.startswith(r'/'):
                 item = parse.urljoin(self.url, item)
@@ -72,11 +73,12 @@ class Vamp(object):
 
         return url_results
 
+
     @classmethod
     def sanitize_urls(self, urls):
         """
         Takes a list of urls and removes all items that do not start
-        are not relative links and do not start with http
+        with 'http' or are not relative links
 
         Args:
                 urls: A list of urls
