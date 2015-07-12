@@ -77,7 +77,7 @@ class Vamp(object):
                 item = parse.urljoin(self.url, item)
 
             self.logger.debug('Checking URL %s', item)
-            url_response = requests.get(item)
+            url_response = requests.head(item)
             url_results[item] = url_response.status_code
 
         return url_results
