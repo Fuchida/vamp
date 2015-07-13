@@ -10,6 +10,11 @@ from lxml import html
 class Vamp(object):
 
     def __init__(self, url, log_level=None):
+        """
+        Args:
+                string: url of the main site 
+                string: log_level of how much information you need (INFO, DEBUG etc)
+        """
         self.url = url
         self.logger = logging.getLogger('Vamp')
         if log_level:
@@ -23,7 +28,6 @@ class Vamp(object):
 
         Args:
                 String: A specific page on the site
-                String: log_level of how much information you need (INFO, )
 
         Return:
                 Dictionary: Containing key value links and status
