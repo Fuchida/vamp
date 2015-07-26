@@ -12,7 +12,7 @@ class Vamp(object):
     def __init__(self, url, log_level=None):
         """
         Args:
-                string: url of the main site 
+                string: url of the main site
                 string: log_level of how much information you need (INFO, DEBUG etc)
         """
         self.url = url
