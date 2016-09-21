@@ -1,4 +1,4 @@
-from urllib import parse
+from urllib.parse import urljoin
 import logging
 
 import requests
@@ -9,7 +9,7 @@ from lxml import html
 
 class Vamp(object):
 
-    def __init__(self, url, log_level=None):
+    def __init__(self, url, log_level='INFO'):
         """
         Args:
                 string: url of the main site
@@ -22,7 +22,7 @@ class Vamp(object):
             self.level = logging.getLevelName(log_level)
             self.logger.setLevel(self.level)
 
-    def scan_page(self, page=None):
+    def scan(self, page=None):
         """
         Given the configured url return dead links
 
@@ -78,7 +78,7 @@ class Vamp(object):
         # Make relative urls absolute
         for item in http_urls:
             if item.startswith(r'/'):
-                item = parse.urljoin(self.url, item)
+                item = urljoin(self.url, item)
 
             self.logger.debug('Checking URL %s', item)
             url_response = requests.head(item)
