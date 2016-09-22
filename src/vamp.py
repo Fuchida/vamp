@@ -39,7 +39,9 @@ class Vamp(object):
             response = requests.get(page)
 
         page_urls = self.get_page_urls(response.text)
-        urls_and_statuses = self.check_url_status(page_urls)
+        clean_urls = self.sanitize_urls(page_urls)
+        urls_and_statuses = self.check_url_status(clean_urls)
+
         dead_links = self._filter_ok_responses(urls_and_statuses)
         return dead_links
 
@@ -73,24 +75,20 @@ class Vamp(object):
         """
 
         url_results = {}
-        http_urls = self.sanitize_urls(urls)
 
-        # Make relative urls absolute
-        for item in http_urls:
-            if item.startswith(r'/'):
-                item = urljoin(self.url, item)
-
+        for item in urls:
             self.logger.debug('Checking URL %s', item)
             url_response = requests.head(item)
             url_results[item] = url_response.status_code
 
         return url_results
 
-    @classmethod
     def sanitize_urls(self, urls):
         """
         Takes a list of urls and removes all items that do not start
-        with 'http' or are not relative links
+        with 'http' or are not relative links.
+
+        Will also make relative links absolite
 
         Args:
                 urls: A list of urls
@@ -98,8 +96,18 @@ class Vamp(object):
         Returns:
                 A list of urls
         """
+        absolute_and_relative = [item for item in urls if item.startswith('http') or item.startswith(r'/')]
+        clean_links = []
 
-        return [item for item in urls if item.startswith('http') or item.startswith(r'/')]
+        # Make relative urls absolute
+        for item in absolute_and_relative:
+            if item.startswith(r'/'):
+                item = urljoin(self.url, item)
+                clean_links.append(item)
+            else:
+                clean_links.append(item)
+
+        return clean_links
 
     def _filter_ok_responses(self, urls_and_statuses):
         """
