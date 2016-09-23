@@ -1,4 +1,4 @@
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 import logging
 
 import requests
@@ -15,14 +15,25 @@ class Vamp(object):
                 string: url of the main site
                 string: log_level of how much information you need (INFO, DEBUG etc)
         """
-        self.url = url
+        self.site_url = url
+        self.site_domain = urlparse(self.site_url).hostname
+
+        self.internal_links = []
+        self.external_links = []
+        self.checked_links = []
+        self.dead_links = []
+
         self.logger = logging.getLogger('Vamp')
         if log_level:
             logging.basicConfig()
             self.level = logging.getLevelName(log_level)
             self.logger.setLevel(self.level)
 
-    def scan(self, page=None):
+    def scan(self):
+        self.crawl()
+        return (self.dead_links)
+
+    def crawl(self, page=None):
         """
         Given the configured url return dead links
 
@@ -34,16 +45,42 @@ class Vamp(object):
         """
 
         if page is None:
-            response = requests.get(self.url)
-        else:
+            page = self.site_url
+
+        if self.site_domain in page and page not in self.internal_links:
+            self.internal_links.append(page)
+
+            self.logger.debug('[ Requesting ] page %s', page)
             response = requests.get(page)
 
-        page_urls = self.get_page_urls(response.text)
-        clean_urls = self.sanitize_urls(page_urls)
-        urls_and_statuses = self.check_url_status(clean_urls)
+            self.logger.debug('[ Gathering ] links from %s', response.url)
+            page_urls = self.get_page_urls(response.text)
 
-        dead_links = self._filter_ok_responses(urls_and_statuses)
-        return dead_links
+            clean_urls = self.sanitize_urls(page_urls)
+            urls_and_statuses = self.check_url_status(clean_urls)
+            dead_links = self._filter_ok_responses(urls_and_statuses)
+
+            for link, status in dead_links.items():
+                self.dead_links.append({link: status})
+
+            if clean_urls:
+                    for url in clean_urls:
+                        self.crawl(url)
+            else:
+                return None
+
+        elif self.site_domain not in page and page not in self.external_links:
+            self.external_links.append(page)
+
+            clean_urls = self.sanitize_urls([page])
+            urls_and_statuses = self.check_url_status(clean_urls)
+            dead_links = self._filter_ok_responses(urls_and_statuses)
+
+            for link, status in dead_links.items():
+                self.dead_links.append({link: status})
+
+        else:
+            return None
 
     def get_page_urls(self, html_page):
         """
@@ -77,9 +114,13 @@ class Vamp(object):
         url_results = {}
 
         for item in urls:
-            self.logger.debug('Checking URL %s', item)
-            url_response = requests.head(item)
-            url_results[item] = url_response.status_code
+            if item not in self.checked_links:
+                self.checked_links.append(item)
+
+                self.logger.debug('[ Checking ] status of %s', item)
+                url_response = requests.head(item)
+
+                url_results[item] = url_response.status_code
 
         return url_results
 
@@ -102,7 +143,7 @@ class Vamp(object):
         # Make relative urls absolute
         for item in absolute_and_relative:
             if item.startswith(r'/'):
-                item = urljoin(self.url, item)
+                item = urljoin(self.site_url, item)
                 clean_links.append(item)
             else:
                 clean_links.append(item)
