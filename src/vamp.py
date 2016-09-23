@@ -127,7 +127,7 @@ class Vamp(object):
     def sanitize_urls(self, urls):
         """
         Takes a list of urls and removes all items that do not start
-        with 'http' or are not relative links.
+        with 'http' or are not relative links or have localhost in the hostname.
 
         Will also make relative links absolite
 
@@ -137,6 +137,7 @@ class Vamp(object):
         Returns:
                 A list of urls
         """
+
         absolute_and_relative = [item for item in urls if item.startswith('http') or item.startswith(r'/')]
         clean_links = []
 
@@ -145,9 +146,11 @@ class Vamp(object):
             if item.startswith(r'/'):
                 item = urljoin(self.site_url, item)
                 clean_links.append(item)
+
             else:
                 clean_links.append(item)
 
+        clean_links = [item for item in clean_links if 'localhost' not in urlparse(item).hostname]
         return clean_links
 
     def _filter_ok_responses(self, urls_and_statuses):
