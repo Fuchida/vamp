@@ -2,8 +2,11 @@ from urllib.parse import urljoin, urlparse
 import logging
 
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 from lxml import html
 
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 # TODO: Detect redirect statuses
 
 
@@ -51,7 +54,7 @@ class Vamp(object):
             self.internal_links.append(page)
 
             self.logger.debug('[ Requesting ] page %s', page)
-            response = requests.get(page)
+            response = requests.get(page, verify=False)
 
             self.logger.debug('[ Gathering ] links from %s', response.url)
             page_urls = self.get_page_urls(response.text)
