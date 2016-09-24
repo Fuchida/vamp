@@ -7,11 +7,11 @@ API aerial view {In progress} [![Code Health](https://landscape.io/github/Fuchid
 from vamp import Vamp
 
 # Setup
-vamp_scanner = Vamp('http://webpage.com')
+crawler = Vamp('http://webpage.com')
 
-# Scan a page
+# Scan a page or configured site
 # if specific page is not specified, index page will be scanned
-vamp_scanner.scan_page()
+crawler.scan()
 
 # When a dead link/s is found
 >> {"http://example.com/hello.html":404}
