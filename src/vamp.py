@@ -1,5 +1,6 @@
 from urllib.parse import urljoin, urlparse
 import logging
+import sys
 
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -55,6 +56,8 @@ class Vamp(object):
 
             self.logger.debug('[ Requesting ] page %s', page)
             response = requests.get(page, verify=False)
+            from time import sleep
+            sleep(0.5)
 
             self.logger.debug('[ Gathering ] links from %s', response.url)
             page_urls = self.get_page_urls(response.text)
@@ -122,6 +125,8 @@ class Vamp(object):
 
                 self.logger.debug('[ Checking ] status of %s', item)
                 url_response = requests.head(item)
+                from time import sleep
+                sleep(0.5)
 
                 url_results[item] = url_response.status_code
 
@@ -171,3 +176,7 @@ class Vamp(object):
         return {url: status_code for
                 url, status_code in urls_and_statuses.items()
                 if status_code is not 200}
+
+if __name__ == '__main__':
+    crawl = Vamp(sys.argv[1], 'DEBUG')
+    crawl.scan()
