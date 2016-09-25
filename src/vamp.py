@@ -4,6 +4,7 @@ import sys
 
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from bs4 import BeautifulSoup
 
 from lxml import html
 
@@ -99,9 +100,8 @@ class Vamp(object):
         Returns:
             A list with HTML links or and empty dictionary
         """
-
-        tree = html.fromstring(html_page)
-        links = tree.xpath('//a/@href')
+        soup = BeautifulSoup(html_page, 'html.parser')
+        links = [link.get('href') for link in soup.find_all('a')]
         return(links)
 
     def check_url_status(self, urls):
