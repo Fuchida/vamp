@@ -6,8 +6,6 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from bs4 import BeautifulSoup
 
-from lxml import html
-
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 # TODO: Detect redirect statuses
 
@@ -176,6 +174,7 @@ class Vamp(object):
         return {url: status_code for
                 url, status_code in urls_and_statuses.items()
                 if status_code is not 200}
+
 
 if __name__ == '__main__':
     crawl = Vamp(sys.argv[1], 'DEBUG')
