@@ -69,8 +69,8 @@ class Vamp(object):
                 self.dead_links.append({link: status})
 
             if clean_urls:
-                    for url in clean_urls:
-                        self.crawl(url)
+                for url in clean_urls:
+                    self.crawl(url)
             else:
                 return None
 
