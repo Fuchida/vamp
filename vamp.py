@@ -156,7 +156,7 @@ class Vamp(object):
             else:
                 clean_links.append(item)
 
-        clean_links = [item for item in clean_links if 'localhost' not in urlparse(item).hostname]
+        clean_links = [link for link in clean_links if 'localhost' not in urlparse(item).hostname]
         return clean_links
 
     def _filter_ok_responses(self, urls_and_statuses):
