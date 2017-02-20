@@ -1,5 +1,20 @@
 A small Python 3 module that scans a page and returns dead links
 
+### Installation
+```
+git clone https://github.com/Fuchida/vamp.git
+
+virtualenv --distribute --no-site-packages vamp -p /path/to/your/python3
+
+. bin/activate
+
+pip install -r requirements.txt
+
+# Debug mode
+python vamp http://example.com
+
+```
+
 API aerial view {In progress} [![Code Health](https://landscape.io/github/Fuchida/vamp/master/landscape.svg?style=flat)](https://landscape.io/github/Fuchida/vamp/master)
 --------------
 
@@ -18,5 +33,4 @@ crawler.scan()
 
 # When no dead link/s are found
 >> {}
-
 ```
