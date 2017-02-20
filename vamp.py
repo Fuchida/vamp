@@ -121,12 +121,12 @@ class Vamp(object):
             if item not in self.checked_links:
                 self.checked_links.append(item)
 
-                self.logger.debug('[ Checking ] status of %s', item)
                 url_response = requests.head(item)
                 from time import sleep
                 sleep(0.5)
 
                 url_results[item] = url_response.status_code
+                self.logger.debug('[ %d ] %s', url_response.status_code, item)
 
         return url_results
 
