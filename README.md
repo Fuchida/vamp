@@ -13,8 +13,8 @@ virtualenv --distribute --no-site-packages vamp -p /path/to/your/python3
 
 pip install -r requirements.txt
 
-# Debug mode
-python vamp http://example.com
+# Run in Debug mode
+python vamp.py http://example.com
 
 ```
 
