@@ -1,7 +1,5 @@
 A small Python 3 module that scans a page and returns dead links
 
-[![Code Health](https://landscape.io/github/Fuchida/vamp/master/landscape.svg?style=flat)](https://landscape.io/github/Fuchida/vamp/master)
-
 ### Installation
 --------------
 ```
