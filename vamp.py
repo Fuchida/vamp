@@ -99,7 +99,7 @@ class Vamp(object):
             A list with HTML links or and empty dictionary
         """
         soup = BeautifulSoup(html_page, 'html.parser')
-        links = [link.get('href') for link in soup.find_all('a')]
+        links = [link.get('href') for link in soup.find_all('a') if link.get('href') != None]
         return(links)
 
     def check_url_status(self, urls):
